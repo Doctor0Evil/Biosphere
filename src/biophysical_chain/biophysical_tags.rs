@@ -22,3 +22,30 @@ impl BioDomain {
         }
     }
 }
+
+#[derive(Clone, Debug)]
+pub struct IrreversibleToken {
+    pub transcript_hash: String,
+    pub user_signature: String, // e.g., Bostrom sig, not interpreted here
+    pub issued_at: SystemTime,
+}
+
+// In EvolutionProposal:
+pub irreversible_token: Option<IrreversibleToken>;
+if constraints.require_irreversible_confirmation
+    && pattern.reversibility == Reversibility::Irreversible
+    && proposal.irreversible_token.is_none()
+{
+    accepted = false;
+    reasons.push("Irreversible pattern requires explicit irreversible_token".into());
+}
+
+#[derive(Clone, Debug)]
+pub struct SmartMeta {
+    pub learning_epoch: u64,
+    pub qpudatashard_id: String,
+    pub entropy_seed_hex: String, // logged, not used for randomness here
+}
+
+// In AutomationCycle:
+pub smart_meta: Option<SmartMeta>;
