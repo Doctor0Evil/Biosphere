@@ -1,0 +1,152 @@
+version 1.0
+schema biospectre.host.deep-domain-rights
+host-id bostrom18sd2ujv24ual9c9pshtxys6j8knh6xaead9ye7
+profile-id deep-domain-rights.v1
+hextag 0xDDOM-RIGHTS-2026A1
+
+link-augmentation-right-profile augmentation-right.v1
+link-evolution-turn-policy evolution_turn_policy.aln
+link-organichain hextag 0xOGNC-BIO-NEURO-CHAIN-01
+
+# 1. Sovereign control of deep-domain excavation
+sovereign-control
+  # Only host’s DID/role may change deep-domain envelopes
+  owner-did bostrom18sd2ujv24ual9c9pshtxys6j8knh6xaead9ye7
+  allowed-roles
+    - augmented-citizen
+  denied-roles
+    - vendor-generic
+    - sandbox
+    - pure-machine
+  ai-platforms-may-propose true
+  ai-platforms-may-execute false
+
+# 2. Layer access policy: B1–B4 and "!"
+layer-access
+  # B1 is always allowed for echo, never counted as deep spend.
+  b1
+    allow-echo true
+    allow-excavation false
+    max-daily-epochs 0
+
+  # B2 structural: moderate, repeatable introspection.
+  b2
+    allow-echo true
+    allow-excavation true
+    max-daily-epochs 96        # e.g., 4 per hour across 24 h
+    max-epochs-per-turn 4
+    min-lifeforce-band Green,Yellow
+    min-lifeforce-scalar01 0.55
+    max-ecoenergynj-per-epoch 90.0
+
+  # B3 deep: archetype vault; higher value + stricter gates.
+  b3
+    allow-echo true
+    allow-excavation true
+    max-daily-epochs 32        # hard cap
+    max-epochs-per-turn 3
+    min-lifeforce-band Green
+    min-lifeforce-scalar01 0.65
+    max-ecoenergynj-per-epoch 80.0
+    require-brain-token-min 1.0
+    require-draculawave-min 0.1
+    require-evolution-turn-kind research-deep-biophysical-domain
+
+  # B4 rare: ?-band, anomalous microstates, ultra‑rare.
+  b4
+    allow-echo true
+    allow-excavation true
+    max-daily-epochs 8
+    max-epochs-per-turn 1
+    min-lifeforce-band Green
+    min-lifeforce-scalar01 0.70
+    max-ecoenergynj-per-epoch 70.0
+    require-brain-token-min 2.0
+    require-draculawave-min 0.3
+    require-irreversible-token true
+    require-explicit-intent-tag rare-deep-object
+    min-query-separation-mins 30
+
+  # Explicit exclusion channel "!"
+  excluded
+    deny-echo true
+    deny-excavation true
+    rationale "eco or lifeforce outside sovereign envelopes"
+
+# 3. Pain / fear / blood envelopes for deep-domain operations
+envelopes
+  # Map to your BLOOD/SUGAR/SMART/WAVE governance fields.
+  pain-envelope
+    preferred-range-0-1 0.20 0.60
+    hard-max-0-1 0.80
+    host-can-raise-hard-max true
+    raise-requires-irreversible-token true
+
+  fear-envelope
+    preferred-range-0-1 0.10 0.55
+    hard-max-0-1 0.75
+
+  blood-envelope
+    # These link into your BLOOD token + lifeforcescalar01 logic.
+    min-blood-token 0.20
+    preferred-blood-token 0.35
+    allow-b3-if-blood-above 0.30
+    allow-b4-if-blood-above 0.40
+
+# 4. Daily deep-excavation budgets (non-seizable, host-bound)
+budgets
+  # Counted per UTC day; all balances are inner-ledger only.
+  b2-max-epochs-per-day 96
+  b3-max-epochs-per-day 32
+  b4-max-epochs-per-day 8
+
+  # Brain / DraculaWave / Eco tokens as capacity meters, not money.
+  brain-tokens-daily-budget 32.0
+  draculawave-daily-budget 2.0
+  eco-nj-daily-budget 14000.0
+
+  # Behavior when budget exhausted: log-only, no actuation.
+  on-budget-exhaustion-mode log-only-no-new-excavation
+
+# 5. Consent + irreversibility hooks
+consent
+  # All B3/B4 use must carry a transcripthash + consent bundle.
+  require-transcripthash true
+  require-human-readable-explanation true
+  explanation-min-words 25
+  enforce-irreversible-token-for-b4 true
+  irreversible-token-scope-id deep-domain-excavation-2026-v1
+
+# 6. Microspace sovereignty hooks
+microspace
+  # No routing of deep-domain outputs to shared hosts.
+  forbid-external-host-routing true
+  forbid-shared-microspaces true
+  allow-metadata-only-attestations true
+  metadata-allowed-fields
+    - totalepochsscanned
+    - b1count
+    - b2count
+    - b3count
+    - b4count
+    - excludedcount
+    - totalenergynj
+    - energyreductionvsbaselinepct
+    - braintokens_spent
+
+# 7. Telemetry and audit requirements
+audit
+  # Require an ALN qpudatashard for any B3/B4 excavation turn.
+  require-deepobjectexcavationprofile true
+  min-proofhex-length 8
+  provenance-required-fields
+    - queryid
+    - aichatplatform
+    - intentkind
+    - lifeforcescalar01
+    - band
+    - totalenergynj
+    - b3count
+    - b4count
+    - braintokens_spent
+    - draculawave_spent
